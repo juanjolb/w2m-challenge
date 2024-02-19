@@ -50,12 +50,7 @@ import { InputUppercaseDirective } from '../shared/directives/input-uppercase.di
           <button mat-raised-button (click)="handleBack()" type="button">
             Back
           </button>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="handleSubmit()"
-            [disabled]="isValid"
-          >
+          <button mat-raised-button color="primary" [disabled]="isValid">
             Save
           </button>
         </div>
@@ -86,6 +81,7 @@ export class HeroActionsComponent implements OnInit {
   private heroesService = inject(HeroesService);
   private alertService = inject(AlertService);
   editableHero = signal<Hero | null>(null);
+  allHeroes = signal<Hero[]>([]);
 
   hero = this.fb.group({
     name: ['', [Validators.required]],
@@ -145,27 +141,44 @@ export class HeroActionsComponent implements OnInit {
   }
 
   createHero() {
-    // get form values and create hero
-    const newHero: Omit<Hero, 'id'> = {
-      ...this.defaultHero,
-      name: this.hero.value.name!,
-      biography: {
-        ...this.defaultHero.biography!,
-        aliases: this.hero.value.aliases!.split(','),
-        placeOfBirth: this.hero.value.place_birth!,
-      },
-      powerstats: {
-        ...this.defaultHero.powerstats!,
-        power: this.hero.value.power!,
-      },
-    };
-    this.heroesService.createHero(newHero).subscribe({
-      next: (hero: Hero) => {
-        this.alertService.alertSuccess('Hero created successfully');
-        this.router.navigate(['/heroes']);
+    // Check that hero does not exist
+    this.heroesService.fetchAllHeroes().subscribe({
+      next: (heroes: Hero[]) => {
+        const name = this.hero.value.name!.toUpperCase();
+        if (heroes.some((hero) => hero.name.toUpperCase() === name)) {
+          this.alertService.alertError('Hero already exists');
+          return;
+        }
+        // get form values and create hero
+        const newHero: Omit<Hero, 'id'> = {
+          ...this.defaultHero,
+          name: name,
+          images: {
+            ...this.defaultHero.images!,
+            // from heroes list, get a random image
+            md: heroes[Math.floor(Math.random() * heroes.length)].images.md,
+          },
+          biography: {
+            ...this.defaultHero.biography!,
+            aliases: this.hero.value.aliases!.split(','),
+            placeOfBirth: this.hero.value.place_birth!,
+          },
+          powerstats: {
+            ...this.defaultHero.powerstats!,
+            power: this.hero.value.power!,
+          },
+        };
+        this.heroesService.createHero(newHero).subscribe({
+          next: (hero: Hero) => {
+            this.alertService.alertSuccess('Hero created successfully');
+            this.router.navigate(['/heroes']);
+          },
+          error: (error) =>
+            this.alertService.alertError('Error creating hero', error),
+        });
       },
       error: (error) =>
-        this.alertService.alertError('Error creating hero', error),
+        this.alertService.alertError('Error fetching heroes', error),
     });
   }
 

@@ -22,10 +22,6 @@ import { RouterLink } from '@angular/router';
       <mat-card-content>
         <mat-list>
           <mat-list-item
-            ><strong>Full name: </strong
-            >{{ hero.biography.fullName }}</mat-list-item
-          >
-          <mat-list-item
             ><strong>Aliases: </strong
             >{{ hero.biography.aliases }}</mat-list-item
           >

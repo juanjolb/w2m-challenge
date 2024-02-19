@@ -76,7 +76,7 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   totalSize = signal<number>(0);
   pageSize = signal<number>(10);
   currentPage = signal<number>(1);
-  pageSizeOptions: number[] = [5, 10, 25];
+  pageSizeOptions: number[] = [5, 10, 25, 50];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -99,7 +99,7 @@ export class HeroesComponent implements OnInit, AfterViewInit {
    */
   onSearchHeroe(searchTerm: string): void {
     if (!searchTerm) {
-      this.fetchHeroes();
+      this.fetchHeroes();  
       return;
     }
 
