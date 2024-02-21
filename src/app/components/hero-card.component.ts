@@ -35,10 +35,19 @@ import { RouterLink } from '@angular/router';
         </mat-list>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button [routerLink]="['/heroes/edit', hero.id]">
+        <button
+          mat-stroked-button
+          appereance="outline"
+          [routerLink]="['/heroes/edit', hero.id]"
+        >
           Edit
         </button>
-        <button mat-button color="warn" (click)="openDeleteDialog()">
+        <button
+          mat-stroked-button
+          appereance="outline"
+          color="warn"
+          (click)="openDeleteDialog()"
+        >
           Delete
         </button>
       </mat-card-actions>

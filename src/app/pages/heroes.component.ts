@@ -35,6 +35,8 @@ import { RouterLink } from '@angular/router';
         [hero]="heroe"
         (onDeleteHero)="deleteHero($event)"
       ></app-hero-card>
+      } @empty {
+      <p>No heroes found</p>
       }
     </div>
 
@@ -54,8 +56,8 @@ import { RouterLink } from '@angular/router';
     }
     .heroes-grid {
       display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.2rem;
       margin-bottom: 1rem; 
     }
     .mat-mdc-paginator {
@@ -75,6 +77,7 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   heroesList = signal<Hero[]>([]);
   totalSize = signal<number>(0);
   pageSize = signal<number>(10);
+  searchTerm = signal<string>('');
   currentPage = signal<number>(1);
   pageSizeOptions: number[] = [5, 10, 25, 50];
 
@@ -84,13 +87,13 @@ export class HeroesComponent implements OnInit, AfterViewInit {
     this.paginator.page.subscribe((event) => {
       this.pageSize.set(event.pageSize);
       this.currentPage.set(event.pageIndex + 1);
-      this.fetchHeroes();
+      this.fetchPaginatedHeroes();
     });
   }
 
   ngOnInit(): void {
     this.fetchHeroesTotalSize();
-    this.fetchHeroes();
+    this.fetchPaginatedHeroes();
   }
 
   /*
@@ -98,36 +101,40 @@ export class HeroesComponent implements OnInit, AfterViewInit {
    */
   onSearchHeroe(searchTerm: string): void {
     if (!searchTerm) {
-      // reset paginator with default values again
+      // reset paginator and set default values
+      this.searchTerm.set('');
       this.fetchHeroesTotalSize();
-      this.fetchHeroes();
+      this.fetchPaginatedHeroes();
       return;
     }
     // reset paginator
     this.paginator.firstPage();
     this.currentPage.set(1);
-
-    this.fetchHeroes(searchTerm);
+    // set search term and fetch heroes
+    this.searchTerm.set(searchTerm);
+    this.fetchHeroesTotalSize();
+    this.fetchPaginatedHeroes();
   }
 
-  fetchHeroes(searchterm?: string): void {
+  fetchPaginatedHeroes(): void {
     this.heroesService
-      .fetchPaginatedHeroes(this.currentPage(), this.pageSize(), searchterm)
+      .fetchPaginatedHeroes(
+        this.currentPage(),
+        this.pageSize(),
+        this.searchTerm()
+      )
       .subscribe({
-        next: (heroes) => {
-          this.heroesList.set(heroes);
-          searchterm && this.totalSize.set(heroes.length);
-        },
+        next: (heroes) => this.heroesList.set(heroes),
         error: (err) => console.error(err),
       });
   }
 
   /*
    * Fetch the total number of heroes to set the paginator length
-   *	 This is a workaround because the API does not provide a total size
+   * This is a workaround because the API does not provide a total size
    */
   fetchHeroesTotalSize(): void {
-    this.heroesService.fetchAllHeroes().subscribe({
+    this.heroesService.fetchAllHeroes(this.searchTerm()).subscribe({
       next: (heroes) => this.totalSize.set(heroes.length),
       error: (err) => console.error(err),
     });

@@ -6,8 +6,8 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 })
 export class AlertService {
   defaultConfig: MatSnackBarConfig = {
-    duration: 8000,
-    horizontalPosition: 'end',
+    duration: 6000,
+    horizontalPosition: 'center',
     verticalPosition: 'bottom',
   };
 

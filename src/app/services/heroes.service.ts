@@ -15,20 +15,24 @@ export class HeroesService {
 
   constructor() {}
 
-  fetchAllHeroes(): Observable<Hero[]> {
-    return this.http.get<Hero[]>(`${this.apiUrl}/heroes`);
+  fetchAllHeroes(searchTerm?: string): Observable<Hero[]> {
+    return this.http.get<Hero[]>(`${this.apiUrl}/heroes`, {
+      params: {
+        name_like: searchTerm ?? '',
+      },
+    });
   }
 
   fetchPaginatedHeroes(
     page: number,
-    pageSize: number,
-    searchTerm?: string
+    limit: number,
+    searchTerm: string
   ): Observable<Hero[]> {
     return this.http.get<Hero[]>(`${this.apiUrl}/heroes`, {
       params: {
         _page: page.toString(),
-        _limit: pageSize.toString(),
-        name_like: searchTerm ?? '',
+        _limit: limit.toString(),
+        name_like: searchTerm,
       },
     });
   }
