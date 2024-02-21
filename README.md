@@ -12,9 +12,9 @@ This is a repository that contains an Angular 17 project challenge for W2M, this
 ## Setup
 * Install json server (@0.17.4 is mandatory)
 
-     *npm i -g json-server@0.17.4*
-     *json-server --watch db.json^*
+     **npm i -g json-server@0.17.4*
+     **json-server --watch db.json^*
 
 * Serve angular project
 
-     *ng serve --open*
+     **ng serve --open*
