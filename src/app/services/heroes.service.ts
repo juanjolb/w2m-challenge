@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Hero } from '../models/Hero';
 import { HttpClient } from '@angular/common/http';
-import { PaginatedHeroes } from '../models/PaginatedHeroes';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +15,7 @@ export class HeroesService {
 
   constructor() {}
 
-  fetchAllHeroes(searchTerm?: string): Observable<Hero[]> {
+  fetchAllHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(`${this.apiUrl}/heroes`);
   }
 
@@ -24,12 +23,12 @@ export class HeroesService {
     page: number,
     pageSize: number,
     searchTerm?: string
-  ): Observable<PaginatedHeroes> {
-    return this.http.get<PaginatedHeroes>(`${this.apiUrl}/heroes`, {
+  ): Observable<Hero[]> {
+    return this.http.get<Hero[]>(`${this.apiUrl}/heroes`, {
       params: {
-        // 'data.name_like': searchTerm || '',
         _page: page.toString(),
-        _per_page: pageSize.toString(),
+        _limit: pageSize.toString(),
+        name_like: searchTerm ?? '',
       },
     });
   }

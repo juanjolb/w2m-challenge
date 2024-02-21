@@ -39,9 +39,9 @@ import { RouterLink } from '@angular/router';
     </div>
 
     <mat-paginator
-      [length]="totalSize()"
       [pageSize]="pageSize()"
       [pageSizeOptions]="pageSizeOptions"
+      [length]="totalSize()"
     >
     </mat-paginator>
   `,
@@ -89,49 +89,48 @@ export class HeroesComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.fetchHeroesTotalSize();
     this.fetchHeroes();
   }
 
   /*
    * Function triggered by the search-bar output component
-   * This function does not work because JSON-Server does not support nested queries
-   * So we need to either paginate or search, but not both at the same time
    */
   onSearchHeroe(searchTerm: string): void {
     if (!searchTerm) {
-      this.fetchHeroes();  
+      // reset paginator with default values again
+      this.fetchHeroesTotalSize();
+      this.fetchHeroes();
       return;
     }
-
     // reset paginator
     this.paginator.firstPage();
     this.currentPage.set(1);
 
-    alert(
-      `Searched for ${searchTerm}\n\nThis function does not work because JSON-Server does not support nested queries, so we need to either paginate or search, but not both at the same time with JSON-Server.`
-    );
-
-    // this.heroesService
-    //   .fetchPaginatedHeroes(this.currentPage(), this.pageSize(), searchTerm)
-    //   .subscribe({
-    //     next: (heroes) => {
-    //       this.totalSize.set(heroes.items);
-    //       this.heroesList.set(heroes.data);
-    //     },
-    //     error: (err) => console.error(err),
-    //   });
+    this.fetchHeroes(searchTerm);
   }
 
-  fetchHeroes(): void {
+  fetchHeroes(searchterm?: string): void {
     this.heroesService
-      .fetchPaginatedHeroes(this.currentPage(), this.pageSize())
+      .fetchPaginatedHeroes(this.currentPage(), this.pageSize(), searchterm)
       .subscribe({
         next: (heroes) => {
-          this.totalSize.set(heroes.items);
-          this.heroesList.set(heroes.data);
+          this.heroesList.set(heroes);
+          searchterm && this.totalSize.set(heroes.length);
         },
         error: (err) => console.error(err),
       });
+  }
+
+  /*
+   * Fetch the total number of heroes to set the paginator length
+   *	 This is a workaround because the API does not provide a total size
+   */
+  fetchHeroesTotalSize(): void {
+    this.heroesService.fetchAllHeroes().subscribe({
+      next: (heroes) => this.totalSize.set(heroes.length),
+      error: (err) => console.error(err),
+    });
   }
 
   deleteHero(id: number): void {

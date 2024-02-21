@@ -4,12 +4,17 @@ This is a repository that contains an Angular 17 project challenge for W2M, this
 
 ## Considerations
 
-* Directive and interceptor points has been developed
-* This project uses json-server as a mockserver, the search funcionality is not complete because json-server does not accept nested queries
-* Tests has not been because lack of time
-* Any question or additional comment, feel free to contact me
+* Directive and interceptor points has been developed.
+* This project uses json-server as a mockserver, it is mandatory to follow the setup guide.
+* Tests and styles has not been implemented due to lack of time.
+* Any question or additional comment, feel free to contact me (lbarcelo.juanjo@gmail.com).
 
 ## Setup
+* Install json server (@0.17.4 is mandatory)
 
-* ng serve --open
-* npx json-server db.json
+     *npm i -g json-server@0.17.4*
+     *json-server --watch db.json^*
+
+* Serve angular project
+
+     *ng serve --open*
