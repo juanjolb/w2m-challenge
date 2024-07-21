@@ -6,15 +6,22 @@ import { MatListModule } from '@angular/material/list';
 import { DeleteDialogComponent } from './delete-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-hero-card',
   standalone: true,
-  imports: [MatCardModule, MatListModule, MatButtonModule, RouterLink],
+  imports: [
+    MatCardModule,
+    MatListModule,
+    MatButtonModule,
+    RouterLink,
+    TitleCasePipe,
+  ],
   template: `
     <mat-card>
       <mat-card-header>
-        <mat-card-title>{{ hero.name }}</mat-card-title>
+        <mat-card-title>{{ hero.name | titlecase }}</mat-card-title>
         <mat-card-subtitle>{{ hero.biography.publisher }}</mat-card-subtitle>
       </mat-card-header>
       <img mat-card-image [src]="hero.images.md" [alt]="hero.name + ' image'" />
