@@ -61,7 +61,8 @@ import { RouterLink } from '@angular/router';
       margin-bottom: 1rem; 
     }
     .mat-mdc-paginator {
-      background: #eee  !important;
+      margin-bottom: 1rem;
+      background: #f8f8f8 !important;
     }
   `,
   imports: [

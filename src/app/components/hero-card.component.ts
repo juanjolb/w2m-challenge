@@ -14,7 +14,6 @@ import { RouterLink } from '@angular/router';
   template: `
     <mat-card>
       <mat-card-header>
-        <div mat-card-avatar></div>
         <mat-card-title>{{ hero.name }}</mat-card-title>
         <mat-card-subtitle>{{ hero.biography.publisher }}</mat-card-subtitle>
       </mat-card-header>
@@ -55,7 +54,14 @@ import { RouterLink } from '@angular/router';
   `,
   styles: `
     mat-card {
-      background: #f5f5f5;
+      background: #f8f8f8;
+      text-align: center;
+      color: black;
+      padding: 10px;
+    }
+    mat-card-header {
+      justify-content: center;
+      padding: 5px 0;
     }
     mat-card-actions {
       display: flex;

@@ -5,6 +5,14 @@ header {
     align-items: center;
     margin-top: 20px;
 }
+
+header .icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;  
+}
+
 mat-divider {
     margin: 10px 0 20px 0;
 }

@@ -7,14 +7,7 @@ import {
 } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  Subject,
-  debounceTime,
-  distinctUntilChanged,
-  fromEvent,
-  map,
-  switchMap,
-} from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-search-bar',
@@ -33,7 +26,16 @@ import {
   styles: `
     mat-form-field {
       width: 320px;
-    } 
+    }
+    .mat-mdc-text-field-wrapper {
+    background-color: white !important;
+    border-bottom: none !important;
+}
+
+.mat-mdc-form-field-focus-overlay {
+  background-color: white !important;
+}
+
   `,
 })
 export class SearchBarComponent implements OnInit, OnDestroy {

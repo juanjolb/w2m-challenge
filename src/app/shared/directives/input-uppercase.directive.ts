@@ -1,7 +1,7 @@
 import { Directive, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[appInputUppercase]',
+  selector: '[transformUpperCase]',
   standalone: true,
 })
 export class InputUppercaseDirective {

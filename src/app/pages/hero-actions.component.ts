@@ -32,7 +32,7 @@ import { InputUppercaseDirective } from '../shared/directives/input-uppercase.di
       <form [formGroup]="hero" class="hero-form" (submit)="handleSubmit()">
         <mat-form-field appereance="outline">
           <mat-label>Name</mat-label>
-          <input matInput formControlName="name" appInputUppercase />
+          <input matInput formControlName="name" transformUpperCase />
         </mat-form-field>
         <mat-form-field appereance="outline">
           <mat-label>Aliases</mat-label>
@@ -73,6 +73,9 @@ import { InputUppercaseDirective } from '../shared/directives/input-uppercase.di
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
+  }
+  .mat-mdc-raised-button[disabled] {
+    background-color: #ccc;
   }
   `,
 })
